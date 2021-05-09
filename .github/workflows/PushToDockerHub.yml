@@ -24,16 +24,16 @@ jobs:
         # https://stackoverflow.com/questions/58177786/get-the-current-pushed-tag-in-github-actions
         name: Get the tag name
         id: get_tag
-        run: echo ::set-output name=TAG_NAME::${GITHUB_REF/refs\/tags\//}
+        run: echo ::set-output name=TAGS::"ursueugen/golex-toy:${GITHUB_REF/refs\/tags\//},ursueugen/golex-toy:latest"
       -
         name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
         env:
-          TAG: ${{ steps.get_tag.outputs.TAG_NAME }}
+          TAGS: ${{ steps.get_tag.outputs.TAGS }}
         with:
           push: true
-          tags: ursueugen/golex-toy:$TAG,ursueugen/golex-toy:latest
+          tags: $TAGS
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
