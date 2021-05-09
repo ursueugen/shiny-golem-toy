@@ -2,7 +2,7 @@ name: Build and push golem-toy image
 on:
   push:
     tags:
-      - '*'
+      - 'v*'
 jobs:
   docker:
     runs-on: ubuntu-latest
@@ -19,13 +19,18 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - 
+        # https://github.community/t/how-to-get-just-the-tag-name/16241/5
+        name: Get the tag name
+        id: get_tag
+        run: echo ::set-output name=TAG_NAME::${GITHUB_REF/refs\/tags\//}
       -
         name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ursueugen/golex-toy:latest
+          tags: ursueugen/golex-toy:$TAG_NAME
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
