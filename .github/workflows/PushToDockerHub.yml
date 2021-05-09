@@ -24,7 +24,7 @@ jobs:
         # https://stackoverflow.com/questions/58177786/get-the-current-pushed-tag-in-github-actions
         name: Get the tag name
         id: get_tag
-        run: echo ::set-output name=TAGS::"ursueugen/golex-toy:${GITHUB_REF/refs\/tags\//},ursueugen/golex-toy:latest"
+        run: echo ::set-output name=TAGS::"ursueugen/golex-toy:latest,ursueugen/golex-toy:${GITHUB_REF/refs\/tags\//}"
       -
         name: Build and push
         id: docker_build
