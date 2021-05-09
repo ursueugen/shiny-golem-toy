@@ -21,6 +21,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - 
         # https://github.community/t/how-to-get-just-the-tag-name/16241/5
+        # https://stackoverflow.com/questions/58177786/get-the-current-pushed-tag-in-github-actions
         name: Get the tag name
         id: get_tag
         run: echo ::set-output name=TAG_NAME::${GITHUB_REF/refs\/tags\//}
@@ -28,9 +29,11 @@ jobs:
         name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
+        env:
+          TAG: ${{ steps.get_tag.outputs.TAG_NAME }}
         with:
           push: true
-          tags: ursueugen/golex-toy:${{ env.TAG_NAME }},ursueugen/golex-toy:latest
+          tags: ursueugen/golex-toy:$TAG,ursueugen/golex-toy:latest
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
