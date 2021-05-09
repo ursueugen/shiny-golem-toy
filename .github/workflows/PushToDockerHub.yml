@@ -30,7 +30,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ursueugen/golex-toy:$TAG_NAME
+          tags: ursueugen/golex-toy:$TAG_NAME,ursueugen/golex-toy:latest
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
